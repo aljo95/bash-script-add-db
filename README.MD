@@ -1,0 +1,1 @@
+### Bash script to add from .csv files to postgreSQL database into organized tables with foreign key referencing

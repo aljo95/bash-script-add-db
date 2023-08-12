@@ -6,7 +6,7 @@ then
   exit
 fi
 
-PSQL="psql --username=passapa --dbname=periodic_table -t --no-align -c"
+PSQL="psql --username=freecodecamp --dbname=periodic_table -t --no-align -c"
 
 #ATOMIC_NUMBER=$($PSQL "Select atomic_number FROM elements WHERE atomic_number=$1 OR symbol='$1' OR name='$1'")
 #GET_NAME_QUERY = "SELECT name FROM elements WHERE atomic_number=$ATOMIC_NUMBER"

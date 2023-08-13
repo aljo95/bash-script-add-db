@@ -5,8 +5,6 @@ PSQL="psql --username=freecodecamp --dbname=number_guess -t --no-align -c"
 echo "Enter your username:"
 read USERNAME
 
-#echo "You picked: $USERNAME"
-
 USERNAME_CHECK=$($PSQL "SELECT usernames FROM player_info WHERE usernames='$USERNAME'")
 
 if [[ -z $USERNAME_CHECK ]]
@@ -14,7 +12,6 @@ then
   echo "Welcome, $USERNAME! It looks like this is your first time here."
   INITIAL_INSERT=$($PSQL "INSERT INTO player_info(usernames, games_played, best_game) VALUES('$USERNAME', 0, 0)")
 else
-  #Welcome back, <username>! You have played <games_played> games, and your best game took <best_game> guesses.
   GAMES_PLAYED=$($PSQL "SELECT games_played FROM player_info WHERE usernames='$USERNAME_CHECK'")
   BEST_GAME=$($PSQL "SELECT best_game FROM player_info WHERE usernames='$USERNAME_CHECK'")
   USERNAME_WHY=$($PSQL "SELECT usernames FROM player_info WHERE usernames='$USERNAME_CHECK'")
@@ -26,15 +23,12 @@ read NUMBER_GUESS
 RANDOM_INT=$[ $RANDOM % 100 + 1 ]
 COUNTER=1;
 
-
-
 DATABASE_INSERTION() {
 
   if [[ -z $USERNAME_CHECK ]]   #IF USERNAME IS NOT IN DB ALREADY
   then
     AMOUNT_GAMES_PLAYED=1
     BEST_GAME_PLAYED=$COUNTER
-    #ADD_USER=$($PSQL "INSERT INTO player_info(usernames, games_played, best_game) VALUES('$USERNAME', $AMOUNT_GAMES_PLAYED, $BEST_GAME_PLAYED)")
     ADD_USER=$($PSQL "UPDATE player_info SET games_played=$AMOUNT_GAMES_PLAYED, best_game=$BEST_GAME_PLAYED WHERE usernames='$USERNAME'")
   else
     UPDATE_GAME_AMOUNT=$($PSQL "SELECT games_played FROM player_info WHERE usernames='$USERNAME_CHECK'")
@@ -48,24 +42,7 @@ DATABASE_INSERTION() {
   fi
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 GUESS_FUNCTION() {
-  echo "Your guess " $1
-  echo "Goal: " $RANDOM_INT
 
   #Check if input is integer
   if ! [[ $1 =~ ^[0-9]+$ ]]
@@ -75,10 +52,6 @@ GUESS_FUNCTION() {
         GUESS_FUNCTION $NUMBER_GUESS
         return 0;
   fi
-
-
-
-
 
   if [[ $1 == $RANDOM_INT ]]
   then
@@ -98,5 +71,3 @@ GUESS_FUNCTION() {
   fi
 }
 GUESS_FUNCTION $NUMBER_GUESS
-
-
